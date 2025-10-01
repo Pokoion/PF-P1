@@ -10,9 +10,9 @@
 -------------------------------------------------------------------------------
 module CatalogoCD where
 -- import Data.XXX
-
+type Titulo = String
 type Serie = (Titulo, NTemporadas, EpisodiosXTemporada, DuracionM, GeneroS, Edad )
-data GeneroS = Accion | Animacion | Comedia | Drama | Documental | SciFic | Suspense | Romance | Terror
+data GeneroS = Accion | Animacion | Comedia | Drama | Documental | SciFic | Suspense | Romance | Terror deriving(Eq,Ord,Show)
 type Edad = Int                -- edad minima para consumir el contenido 
 type NTemporadas = Int
 type EpisodiosXTemporada = Int -- promedio
@@ -120,4 +120,16 @@ generosSerieSinRepresentacion :: [Serie]→[GeneroS]
 misSeries::[Serie]
 misSeries = [s1,s2,s3,s4,s5,s6,s7,a8,a9,s10]
 -}
-
+misSeries :: [Serie]
+misSeries = [ 
+    ("Breaking Code", 5, 12, 50, Drama, 16)
+  , ("Laugh Factory", 3, 20, 25, Comedia, 12)
+  , ("Space Frontier", 4, 10, 45, SciFic, 13)
+  , ("Haunted Nights", 2, 8, 55, Terror, 18)
+  , ("Pixel Adventures", 6, 15, 22, Animacion, 7)
+  , ("World Secrets", 1, 6, 60, Documental, 10)
+  , ("Chasing Shadows", 3, 12, 48, Suspense, 16)
+  , ("Heartbeats", 2, 14, 40, Romance, 13)
+  , ("Urban Warriors", 4, 10, 42, Accion, 15)
+  , ("Cosmos Reborn", 5, 9, 50, SciFic, 12)
+  ]
