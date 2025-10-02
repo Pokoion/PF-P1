@@ -122,14 +122,14 @@ misSeries = [s1,s2,s3,s4,s5,s6,s7,a8,a9,s10]
 -}
 misSeries :: [Serie]
 misSeries = [ 
-    ("Breaking Code", 5, 12, 50, Drama, 16)
-  , ("Laugh Factory", 3, 20, 25, Comedia, 12)
-  , ("Space Frontier", 4, 10, 45, SciFic, 13)
-  , ("Haunted Nights", 2, 8, 55, Terror, 18)
-  , ("Pixel Adventures", 6, 15, 22, Animacion, 7)
-  , ("World Secrets", 1, 6, 60, Documental, 10)
-  , ("Chasing Shadows", 3, 12, 48, Suspense, 16)
-  , ("Heartbeats", 2, 14, 40, Romance, 13)
-  , ("Urban Warriors", 4, 10, 42, Accion, 15)
-  , ("Cosmos Reborn", 5, 9, 50, SciFic, 12)
+    ("Breaking Bad", 5, 13, 47, Drama, 18)
+  , ("Friends", 10, 24, 22, Comedia, 12)
+  , ("Game of Thrones", 8, 10, 57, Drama, 18)
+  , ("The Simpsons", 34, 22, 22, Animacion, 10)
+  , ("Stranger Things", 4, 9, 50, SciFic, 16)
+  , ("The Office (US)", 9, 22, 22, Comedia, 12)
+  , ("Narcos", 3, 10, 49, Suspense, 18)
+  , ("Planet Earth", 2, 11, 50, Documental, 7)
+  , ("The Big Bang Theory", 12, 22, 22, Comedia, 12)
+  , ("The Walking Dead", 11, 16, 45, Terror, 18)
   ]
