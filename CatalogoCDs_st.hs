@@ -22,39 +22,44 @@ type DuracionM = Int           -- minutos, promedio de duracion de los episodios
 -- Funciones extractoras y auxiliares BASICAS: Series
 -- ====================================
 
-{-
--- Extrae el titulo de la serie.
-getTituloS :: Serie -> Titulo	
 
+-- Extrae el titulo de la serie.
+getTituloS :: Serie -> Titulo
+getTituloS (titulo, _, _, _, _, _) = titulo
 
 -- Extrae el num. de temporadas.
 getTemporadas :: Serie -> NTemporadas
-
+getTemporadas (_, ntemporadas, _, _, _, _) = ntemporadas
 
 -- Extrae la duracion por episodio.
 getDuracionEp :: Serie -> DuracionM
-
+getDuracionEp (_, _, _, duracionm, _, _) = duracionm
 
 -- Extrae el genero de la serie AV.
-getGeneroS :: Serie -> GeneroS 	
-
+getGeneroS :: Serie -> GeneroS
+getGeneroS (_, _, _, _, generos, _) = generos
 
 -- Extrae la edad minima recomendada.
-getEdad :: Serie -> Edad 
-
+getEdad :: Serie -> Edad
+getEdad (_, _, _, _, _, edad) = edad
 
 -- Titulo, Nº de Temporadas, y Edad minima de la serie, seguido de salto de linea
-printSerie :: Serie ->String
+printSerie :: Serie -> String
+printSerie serie = 
+    getTituloS serie ++ " - Numero de temporadas: " ++ show (getTemporadas serie) ++ 
+    " - Edad minima recomendada: " ++ show (getEdad serie) ++ "\n"
 
-
--- Imprime la lista completa de canciones (playlist), formateada
+-- Imprime la lista completa de series (playlist), formateada
 printSeries :: [Serie] -> IO ()
 printSeries = putStr .concat .map printSerie
 
-
 -- Implementacion del quicksort por clave
+--qsortBy :: Ord b => (a -> b) -> [a] -> [a]
 qsortBy :: Ord b => (a -> b) -> [a] -> [a]
--}
+qsortBy _ [] = []
+qsortBy f (x:xs) =
+    qsortBy f [y | y <- xs, f y < f x] ++
+    (x : qsortBy f [y | y <- xs, f y >= f x])
 
 
 -- ====================================
@@ -120,16 +125,17 @@ generosSerieSinRepresentacion :: [Serie]→[GeneroS]
 misSeries::[Serie]
 misSeries = [s1,s2,s3,s4,s5,s6,s7,a8,a9,s10]
 -}
+s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 :: Serie
+s1 = ("Breaking Bad", 5, 13, 47, Drama, 18)
+s2 = ("Friends", 10, 24, 22, Comedia, 12)
+s3 = ("Game of Thrones", 8, 10, 57, Drama, 18)
+s4 = ("The Simpsons", 34, 22, 22, Animacion, 10)
+s5 = ("Stranger Things", 4, 9, 50, SciFic, 16)
+s6 = ("The Office (US)", 9, 22, 22, Comedia, 12)
+s7 = ("Narcos", 3, 10, 49, Suspense, 18)
+s8 = ("Planet Earth", 2, 11, 50, Documental, 7)
+s9 = ("The Big Bang Theory", 12, 22, 22, Comedia, 12)
+s10 = ("The Walking Dead", 11, 16, 45, Terror, 18)
+
 misSeries :: [Serie]
-misSeries = [ 
-    ("Breaking Bad", 5, 13, 47, Drama, 18)
-  , ("Friends", 10, 24, 22, Comedia, 12)
-  , ("Game of Thrones", 8, 10, 57, Drama, 18)
-  , ("The Simpsons", 34, 22, 22, Animacion, 10)
-  , ("Stranger Things", 4, 9, 50, SciFic, 16)
-  , ("The Office (US)", 9, 22, 22, Comedia, 12)
-  , ("Narcos", 3, 10, 49, Suspense, 18)
-  , ("Planet Earth", 2, 11, 50, Documental, 7)
-  , ("The Big Bang Theory", 12, 22, 22, Comedia, 12)
-  , ("The Walking Dead", 11, 16, 45, Terror, 18)
-  ]
+misSeries = [s1, s2, s3, s4, s5, s6, s7, s8, s9, s10]
