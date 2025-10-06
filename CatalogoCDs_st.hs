@@ -31,6 +31,10 @@ getTituloS (titulo, _, _, _, _, _) = titulo
 getTemporadas :: Serie -> NTemporadas
 getTemporadas (_, ntemporadas, _, _, _, _) = ntemporadas
 
+--Extrae los capitulos por temporada
+getEpisodiosXT :: Serie -> EpisodiosXTemporada
+getEpisodiosXT (_, _, episodios, _, _, _) = episodios
+
 -- Extrae la duracion por episodio.
 getDuracionEp :: Serie -> DuracionM
 getDuracionEp (_, _, _, duracionm, _, _) = duracionm
@@ -89,30 +93,31 @@ titulosSconPocasTemporadas ntemporadas series = map (\s -> getTituloS s) (filter
 -- series, selecciona n series del listado con duracion menor o igual a dm 
 miSeleccionDeSeriesMasCortasQue:: Int -> DuracionM -> [Serie]-> [Serie]
 miSeleccionDeSeriesMasCortasQue n dm series = take n (filter (\s -> getDuracionEp s <= dm) series)
-{-
+
 -- 5
 -- Dado un listado de series, determina la duración total (en minutos)
 -- de todos los episodios de todas sus temporadas
-totalMinutosCatalogo:: [Serie] -> DuracionM
-
+totalMinutosCatalogo :: [Serie] -> DuracionM
+totalMinutosCatalogo [] = 0
+totalMinutosCatalogo (x:xs) = (getEpisodiosTotales x * getDuracionEp x ) + totalMinutosCatalogo xs
 -- 6
 -- Dado un listado de series, identifica el genero (de series) con el más series
-generoSMasProlifico:: [Serie] -> GeneroS 
+--generoSMasProlifico:: [Serie] -> GeneroS 
 
 -- 7	
 -- Listado de series ordenado decrecientemente por número total de episodios
-rankingSeriesPorNumTotalEpisodios:: [Serie] -> [(GeneroS, Int)]
+--rankingSeriesPorNumTotalEpisodios:: [Serie] -> [(GeneroS, Int)]
 
 -- 8 	
 -- Listado de series ordenado crecientemente por duración total (en minutos), 
 -- considerando todos los episodios de todas sus temporadas
-rankingSeriesMasBreves:: [Serie]→[(Serie, Int)]
+--rankingSeriesMasBreves:: [Serie]→[(Serie, Int)]
 
 -- 9
 -- Dado un listado de series, identifica los generos (de serie) que NO estan 
 -- representados (que faltan) con respecto al conjunto completo de generos definidos
-generosSerieSinRepresentacion :: [Serie]→[GeneroS]
--}
+--generosSerieSinRepresentacion :: [Serie]→[GeneroS]
+
 
 
 -- =============================
@@ -122,6 +127,8 @@ eliminarGenerosRepetidos :: [GeneroS] -> [GeneroS]
 eliminarGenerosRepetidos [] = []
 eliminarGenerosRepetidos (x:xs) = x : eliminarGenerosRepetidos (filter(\g -> g /= x) xs)
 
+getEpisodiosTotales :: Serie -> Int
+getEpisodiosTotales (_, ntemporadas, episodios, _, _, _) = ntemporadas * episodios
 
 -- ======================================
 -- Catalogos/Listados de ejemplos: Datos de prueba de series
