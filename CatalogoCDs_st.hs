@@ -74,7 +74,7 @@ qsortBy f (x:xs) =
 -- Dado un listado de series, calcula en numero de series por genero
 -- incluido en el mismo
 contarNumSeriesXGenero :: [Serie] -> [(GeneroS, Int)]
-contarNumSeriesXGenero series = [(x, length(filter(\s -> getGeneroS s == x) series)) | x <- eliminarGenerosRepetidos (map (\x -> getGeneroS x) series)] 
+contarNumSeriesXGenero series = [(genero, length(filter(\s -> getGeneroS s == genero) series)) | genero <- eliminarGenerosRepetidos (map getGeneroS series)]
 
 --2	
 -- Dada la edad y un listado de series, selecciona todas las series cuya edad
@@ -100,6 +100,7 @@ miSeleccionDeSeriesMasCortasQue n dm series = take n (filter (\s -> getDuracionE
 totalMinutosCatalogo :: [Serie] -> DuracionM
 totalMinutosCatalogo [] = 0
 totalMinutosCatalogo (x:xs) = (getEpisodiosTotales x * getDuracionEp x ) + totalMinutosCatalogo xs
+
 -- 6
 -- Dado un listado de series, identifica el genero (de series) con el más series
 --generoSMasProlifico:: [Serie] -> GeneroS 
@@ -116,8 +117,9 @@ totalMinutosCatalogo (x:xs) = (getEpisodiosTotales x * getDuracionEp x ) + total
 -- 9
 -- Dado un listado de series, identifica los generos (de serie) que NO estan 
 -- representados (que faltan) con respecto al conjunto completo de generos definidos
---generosSerieSinRepresentacion :: [Serie]→[GeneroS]
-
+generosSerieSinRepresentacion :: [Serie] -> [GeneroS]
+generosSerieSinRepresentacion [] = getAllGeneroS
+generosSerieSinRepresentacion series = filter (\g -> g `notElem` eliminarGenerosRepetidos (map (getGeneroS) series)) getAllGeneroS 
 
 
 -- =============================
@@ -130,13 +132,13 @@ eliminarGenerosRepetidos (x:xs) = x : eliminarGenerosRepetidos (filter(\g -> g /
 getEpisodiosTotales :: Serie -> Int
 getEpisodiosTotales (_, ntemporadas, episodios, _, _, _) = ntemporadas * episodios
 
+getAllGeneroS :: [GeneroS]
+getAllGeneroS = [Accion, Animacion, Comedia, Drama, Documental, SciFic, Suspense, Romance, Terror]
+
 -- ======================================
 -- Catalogos/Listados de ejemplos: Datos de prueba de series
 -- ======================================
-{-
-misSeries::[Serie]
-misSeries = [s1,s2,s3,s4,s5,s6,s7,s8,s9,s10]
--}
+
 s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 :: Serie
 s1 = ("Breaking Bad", 5, 13, 47, Drama, 18)
 s2 = ("Friends", 10, 24, 22, Comedia, 12)
