@@ -2,9 +2,9 @@
 --  PRACTICA: Gestion de Catalogo de Contenido Digital     
 --  PF  2025-2026
 
---  Num. del equipo registrado en la egela: Eq_
--- Apellidos del primer integrante:
--- Apellidos del segundo integrante:  
+--  Num. del equipo registrado en la egela: Eq_25
+-- Apellidos del primer integrante: Oñatibia Garmendia
+-- Apellidos del segundo integrante: Olea Goenaga
 -------------------------------------------------------------------------------
 -- GRUPO C: Desarrollo sobre Series
 -------------------------------------------------------------------------------
@@ -98,21 +98,23 @@ miSeleccionDeSeriesMasCortasQue n dm series = take n (filter (\s -> getDuracionE
 -- Dado un listado de series, determina la duración total (en minutos)
 -- de todos los episodios de todas sus temporadas
 totalMinutosCatalogo :: [Serie] -> DuracionM
-totalMinutosCatalogo [] = 0
-totalMinutosCatalogo (x:xs) = (getEpisodiosTotales x * getDuracionEp x ) + totalMinutosCatalogo xs
+totalMinutosCatalogo = foldr ((+) . duracionTotal) 0
 
 -- 6
 -- Dado un listado de series, identifica el genero (de series) con el más series
---generoSMasProlifico:: [Serie] -> GeneroS 
+generoSMasProlifico:: [Serie] -> GeneroS 
+generoSMasProlifico series = fst (last (qsortBy snd (contarNumSeriesXGenero series)))   
 
 -- 7	
 -- Listado de series ordenado decrecientemente por número total de episodios
---rankingSeriesPorNumTotalEpisodios:: [Serie] -> [(GeneroS, Int)]
+rankingSeriesPorNumTotalEpisodios:: [Serie] -> [(Serie, Int)]
+rankingSeriesPorNumTotalEpisodios x =  [(s, getEpisodiosTotales s) | s <- reverse (qsortBy getEpisodiosTotales x)]
 
 -- 8 	
 -- Listado de series ordenado crecientemente por duración total (en minutos), 
 -- considerando todos los episodios de todas sus temporadas
---rankingSeriesMasBreves:: [Serie]→[(Serie, Int)]
+rankingSeriesMasBreves:: [Serie] -> [(Serie, Int)]
+rankingSeriesMasBreves x = [(s , duracionTotal s) | s <-qsortBy duracionTotal x]
 
 -- 9
 -- Dado un listado de series, identifica los generos (de serie) que NO estan 
@@ -134,6 +136,9 @@ getEpisodiosTotales (_, ntemporadas, episodios, _, _, _) = ntemporadas * episodi
 
 getAllGeneroS :: [GeneroS]
 getAllGeneroS = [Accion, Animacion, Comedia, Drama, Documental, SciFic, Suspense, Romance, Terror]
+
+duracionTotal :: Serie -> DuracionM
+duracionTotal x = getEpisodiosTotales x * getDuracionEp x 
 
 -- ======================================
 -- Catalogos/Listados de ejemplos: Datos de prueba de series
