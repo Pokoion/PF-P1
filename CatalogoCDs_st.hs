@@ -139,22 +139,3 @@ getAllGeneroS = [Accion, Animacion, Comedia, Drama, Documental, SciFic, Suspense
 
 duracionTotal :: Serie -> DuracionM
 duracionTotal x = getEpisodiosTotales x * getDuracionEp x 
-
--- ======================================
--- Catalogos/Listados de ejemplos: Datos de prueba de series
--- ======================================
-
-s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 :: Serie
-s1 = ("Breaking Bad", 5, 13, 47, Drama, 18)
-s2 = ("Friends", 10, 24, 22, Comedia, 12)
-s3 = ("Game of Thrones", 8, 10, 57, Drama, 18)
-s4 = ("The Simpsons", 34, 22, 22, Animacion, 10)
-s5 = ("Stranger Things", 4, 9, 50, SciFic, 16)
-s6 = ("The Office (US)", 9, 22, 22, Comedia, 12)
-s7 = ("Narcos", 3, 10, 49, Suspense, 18)
-s8 = ("Planet Earth", 2, 11, 50, Documental, 7)
-s9 = ("The Big Bang Theory", 12, 22, 22, Comedia, 12)
-s10 = ("The Walking Dead", 11, 16, 45, Terror, 18)
-
-misSeries :: [Serie]
-misSeries = [s1, s2, s3, s4, s5, s6, s7, s8, s9, s10]
