@@ -1,10 +1,10 @@
-Breaking Bad;5;13;Drama;18
-Friends;10;24;Comedia;12
-Game of Thrones;8;10;Drama;18
-The Simpsons;34;22;Animacion;10
-Stranger Things;4;9;SciFic;16
-The Office (US);9;22;Comedia;12
-Narcos;3;10;Suspense;18
-Planet Earth;2;11;Documental;7
-The Big Bang Theory;12;22;Comedia;12
-The Walking Dead;11;16;Terror;18
+Breaking Bad;5;13;47;Drama;18
+Friends;10;24;22;Comedia;12
+Game of Thrones;8;10;60;Drama;18
+The Simpsons;34;22;22;Animacion;10
+Stranger Things;4;9;51;SciFic;16
+The Office (US);9;22;22;Comedia;12
+Narcos;3;10;49;Suspense;18
+Planet Earth;2;11;50;Documental;7
+The Big Bang Theory;12;22;22;Comedia;12
+The Walking Dead;11;16;44;Terror;18
