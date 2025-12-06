@@ -160,39 +160,60 @@ splitOn delim = split'
       | d == c = startsWith ds cs
       | otherwise = Nothing
 
-parseGeneroS:: String -> GeneroS
+parseGeneroS:: String -> Maybe GeneroS
 parseGeneroS generoS =
     case generoS of 
-        "Accion"-> Accion
-        "Animacion"->Animacion
-        "Comedia"->Comedia
-        "Drama" -> Drama
-        "Documental" -> Documental
-        "SciFic" -> SciFic
-        "Suspense" -> Suspense
-        "Romance" -> Romance
-        "Terror" -> Terror
+        "Accion"->  Just Accion
+        "Animacion"-> Just Animacion
+        "Comedia"-> Just Comedia
+        "Drama" -> Just Drama
+        "Documental" -> Just Documental
+        "SciFic" -> Just SciFic
+        "Suspense" -> Just Suspense
+        "Romance" -> Just Romance
+        "Terror" -> Just Terror
+        _ -> Nothing
 
-convertirLineaEnSerie :: String -> Serie
-convertirLineaEnSerie linea = 
-    let [titulo, temp, epis, dur, gen, ed] = splitOn ";" linea
-        ntemporadas = read temp :: Int
-        episodios = read epis :: Int
-        duracion = read dur :: Int
-        genero = parseGeneroS gen
-        edad = read ed :: Int
-    in (titulo, ntemporadas, episodios, duracion, genero, edad)
+parseEntero :: String -> Maybe Int
+parseEntero str = 
+    case reads str of
+        [(n, "")] -> Just n
+        _ -> Nothing
+
+convertirLineaEnSerie :: String -> Maybe Serie
+convertirLineaEnSerie linea = do
+    let partes = splitOn ";" linea
+    
+    if length partes /= 6
+        then Nothing
+        else do
+            let [titulo, temp, epis, dur, gen, ed] = partes
+            
+            if null titulo
+                then Nothing
+                else do
+                    ntemporadas <- parseEntero temp
+                    episodios <- parseEntero epis
+                    duracion <- parseEntero dur
+                    genero <- parseGeneroS gen
+                    edad <- parseEntero ed
+                    
+                    if ntemporadas > 0 && episodios > 0 && duracion > 0 && edad >= 0
+                        then Just (titulo, ntemporadas, episodios, duracion, genero, edad)
+                        else Nothing
 
 -- ============================
 -- Funciones de la segunda entrega
 -- ============================
 
 --Cargar catalogos desde un fichero 
-cargarCatalogosDesdeFichero:: FilePath -> IO [Serie]
+cargarCatalogosDesdeFichero :: FilePath -> IO ([Serie], [String])
 cargarCatalogosDesdeFichero filepath = do 
-                                      contenido <- readFile filepath
-                                      let lineasTexto = lines contenido
-                                      let series = map convertirLineaEnSerie lineasTexto
-                                      return series
-
-
+    contenido <- readFile filepath
+    let lineasTexto = lines contenido
+        lineasNumeradas = zip [1..] lineasTexto
+        resultados = map (\(num, linea) -> (num, convertirLineaEnSerie linea)) lineasNumeradas
+        seriesValidas = [s | (_, Just s) <- resultados]
+        errores = ["Error en linea " ++ show num ++ ": formato invalido o datos incorrectos" | (num, Nothing) <- resultados]
+    
+    return (seriesValidas, errores)
