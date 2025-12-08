@@ -207,7 +207,7 @@ convertirLineaEnSerie linea = do
 -- ============================
 
 --Cargar catalogos desde un fichero 
-cargarCatalogosDesdeFichero :: FilePath -> IO ([Serie], [String])
+cargarCatalogosDesdeFichero :: FilePath -> IO [Serie]
 cargarCatalogosDesdeFichero filepath = do 
     contenido <- readFile filepath
     let lineasTexto = lines contenido
@@ -216,4 +216,5 @@ cargarCatalogosDesdeFichero filepath = do
         seriesValidas = [s | (_, Just s) <- resultados]
         errores = ["Error en linea " ++ show num ++ ": formato invalido o datos incorrectos" | (num, Nothing) <- resultados]
     
-    return (seriesValidas, errores)
+    mapM_ putStrLn errores
+    return seriesValidas

@@ -23,25 +23,40 @@ splitOn delim = split'
       | d == c = startsWith ds cs
       | otherwise = Nothing
 
-parseGeneroS:: String -> GeneroS
+parseGeneroS:: String -> Either String GeneroS
 parseGeneroS generoS =
     case generoS of 
-        "Accion"-> Accion
-        "Animacion"->Animacion
-        "Comedia"->Comedia
-        "Drama" -> Drama
-        "Documental" -> Documental
-        "SciFic" -> SciFic
-        "Suspense" -> Suspense
-        "Romance" -> Romance
-        "Terror" -> Terror
+        "Accion"-> Right Accion
+        "Animacion"-> Right Animacion
+        "Comedia"-> Right Comedia
+        "Drama" -> Right Drama
+        "Documental" -> Right Documental
+        "SciFic" -> Right SciFic
+        "Suspense" -> Right Suspense
+        "Romance" -> Right Romance
+        "Terror" -> Right Terror
+        _ -> Left ("Genero no válido: '" ++ generoS ++ "'")
+
+readEither :: String -> String -> Either String Int
+readEither campo s =
+  case reads s of
+    [(v,"")] -> Right v
+    _        -> Left ("Campo " ++ campo ++ " inválido: '" ++ s ++ "'")
+
+convertirLineaEnSerieE :: String -> Either String Serie
+convertirLineaEnSerieE linea =
+  case splitOn ";" linea of
+    [titulo, temp, epis, dur, gen, ed] -> do
+      ntemporadas <- readEither "NTemporadas" temp
+      episodios   <- readEither "EpisodiosXTemporada" epis
+      duracion    <- readEither "DuracionM" dur
+      genero      <- parseGeneroS gen
+      edad        <- readEither "Edad" ed
+      Right (titulo, ntemporadas, episodios, duracion, genero, edad)
+    xs -> Left ("Se esperaban 6 campos; llegaron " ++ show (length xs))
 
 convertirLineaEnSerie :: String -> Serie
-convertirLineaEnSerie linea = (titulo, ntemporadas, episodios, duracion, genero, edad)
-  where
-    [titulo, temp, epis, dur, gen, ed] = splitOn ";" linea
-    ntemporadas = read temp :: Int
-    episodios   = read epis :: Int
-    duracion    = read dur  :: Int
-    genero      = parseGeneroS gen
-    edad        = read ed   :: Int
+convertirLineaEnSerie linea =
+  case convertirLineaEnSerieE linea of
+    Right s  -> s
+    Left msg -> error ("Error de parseo: " ++ msg)
